@@ -1,0 +1,14 @@
+KROONILINEINFLATSIOONISÕLTUVUS:Pikaajaline sõltuvus inflatsioonist majanduses
+KUU-UURIJA:Isik, kes uurib Kuud teaduslikult
+KINTSAKONGAD:Viletsad kontsakingad
+PÜSIVUSVÕIME:Võime millegagi pikalt tegeleda
+TÖÖMAJANDUS:Majandusharu, mis keskendub töö ja tööturu uurimisele
+RÕÕMULIKKUS:Olemise või oleku rõõmsus
+ÕHULOSS:Midagi ebarealistlikku või illusoorset
+TÖÖÕNNETUS:Õnnetus töökohal
+RASKUSASTMELINE:Midagi, millel on erinevad raskusastmed
+ÄMMATÜTAR:abikaasa
+LAULUÕLI:valge viin
+SÕLMENDITOLGEND:lips
+LÜPSENDIPAKSEND:hapupiim
+KUULILENNUTEETUNNELILUUK:Ilus palindroom
