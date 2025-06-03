@@ -324,7 +324,7 @@ def main():
             300  # Make sure this matches the value used in generate_letter_positions
         )
         letters_y_bottom = starty + (row_count - 1) * (GAP + RADIUS * 2)
-        spacing = 350  # You can adjust this if needed
+        spacing = 350  # Adjust this if needed
         hangman_y_top = letters_y_bottom + spacing
         center_x = WINDOW.get_width() // 2
 
@@ -349,7 +349,7 @@ def main():
                         dist = ((x - mx) ** 2 + (y - my) ** 2) ** 0.5
                         if dist < RADIUS:
                             guessed.add(ltr)
-                            letter[3] = False  # set visible = False
+                            letter[3] = False
                             if ltr not in word:
                                 hangman_status += 1
 

@@ -44,7 +44,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 # Educational Features
 
 5. Explanation Popups
-- You already do this — keep enhancing it!
+- keep enhancing it!
 - Add an option like [E] to "expand explanation" and show more context or usage.
 
 6. Pronunciation Audio
