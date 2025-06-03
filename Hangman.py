@@ -1,6 +1,120 @@
 import pygame
 import sys
 import random
+import os
+
+base_path = os.path.dirname(__file__)
+word_file_path = os.path.join(base_path, "estonian_words.txt")
+
+
+class Button:
+    def __init__(self, text, x, y, width, height, font, bg_color, text_color):
+        self.text = text
+        self.rect = pygame.Rect(x, y, width, height)
+        self.font = font
+        self.bg_color = bg_color
+        self.text_color = text_color
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, self.bg_color, self.rect, border_radius=10)
+        text_surf = self.font.render(self.text, True, self.text_color)
+        text_rect = text_surf.get_rect(center=self.rect.center)
+        surface.blit(text_surf, text_rect)
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+
+class BackButton:
+    def __init__(self, x=20, y=20, size=50):
+        self.rect = pygame.Rect(x, y, size, size)
+        self.font = pygame.font.SysFont("arial", 20)
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, WHITE, self.rect, border_radius=8)
+        pygame.draw.polygon(
+            surface,
+            BLACK,
+            [
+                (self.rect.x + 35, self.rect.y + 15),
+                (self.rect.x + 20, self.rect.y + 25),
+                (self.rect.x + 35, self.rect.y + 35),
+            ],
+        )  # Draw a simple left-pointing arrow
+        label = self.font.render("Tagasi", True, (0, 0, 0))
+        label_rect = label.get_rect(center=(self.rect.centerx, self.rect.bottom + 12))
+        surface.blit(label, label_rect)
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+
+def main_menu():
+    running = True
+    title_font = pygame.font.SysFont("arial", 80)
+    menu_font = pygame.font.SysFont("arial", 40)
+
+    play_btn = Button("Mängi", WIDTH // 2 - 100, 300, 200, 60, menu_font, WHITE, BLACK)
+    info_btn = Button(
+        "Reeglid", WIDTH // 2 - 100, 400, 200, 60, menu_font, WHITE, BLACK
+    )
+    quit_btn = Button("Välju", WIDTH // 2 - 100, 500, 200, 60, menu_font, WHITE, BLACK)
+
+    while running:
+        WINDOW.fill(GRAY)
+        title_text = title_font.render("Poomismäng", True, BLACK)
+        WINDOW.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, 150))
+
+        for btn in [play_btn, info_btn, quit_btn]:
+            btn.draw(WINDOW)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if play_btn.is_clicked(event.pos):
+                    main()
+                elif info_btn.is_clicked(event.pos):
+                    show_instructions()
+                elif quit_btn.is_clicked(event.pos):
+                    pygame.quit()
+                    sys.exit()
+
+
+def show_instructions():
+    back_button = BackButton()
+    back_button.draw(WINDOW)
+
+    running = True
+    font = pygame.font.SysFont("arial", 30)
+    lines = [
+        "Arva ära peidetud sõna, üks täht korraga.",
+        "Iga vale täht toob poomise lähemale.",
+        "Arva enne kui kuju valmis saab!",
+        "Vajuta [ESC], või vajuta noolele et naasta menüüsse.",
+    ]
+    while running:
+        WINDOW.fill(WHITE)
+        for i, line in enumerate(lines):
+            text = font.render(line, True, BLACK)
+            WINDOW.blit(text, (50, 100 + i * 40))
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.is_clicked(event.pos):
+                    return
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
 
 def load_words_from_file(filename):
@@ -155,13 +269,13 @@ def wait_for_restart():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                exit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     main()
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
 
 def main():
@@ -201,6 +315,8 @@ def main():
                         y - letter_text.get_height() // 2,
                     ),
                 )
+        back_button = BackButton()
+        back_button.draw(WINDOW)
 
         # Draw hangman
         row_count = 3
@@ -224,6 +340,8 @@ def main():
                 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
                 letters, letter_bottom_y = generate_letter_positions(WINDOW.get_width())
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.is_clicked(event.pos):
+                    return
                 mx, my = pygame.mouse.get_pos()
                 for letter in letters:
                     x, y, ltr, visible = letter
@@ -244,4 +362,4 @@ def main():
     sys.exit()
 
 
-main()
+main_menu()
