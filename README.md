@@ -78,7 +78,7 @@ Make sure the following files are in the same folder:
 - Animate the hangman being drawn (slow fade-in or shake effect on wrong guess).
 - Add background music or sound effects for win/loss.
 
-# Game Modes
+## Game Modes
 
 9. Timed Mode
 - Add a countdown timer — guess the word before time runs out!
