@@ -1,3 +1,8 @@
+# dist fail release githubis
+# failinimi väikse tähtedega
+# jooksutada mängu veebis - pygame wasm - github pages
+
+
 import pygame
 import sys
 import random
@@ -77,7 +82,13 @@ def main_menu():
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if play_btn.is_clicked(event.pos):
-                    main()
+                    while True:
+                        result = main()
+                        if result == "back":
+                            break
+                        elif result == "restart":
+                            continue
+                        break
                 elif info_btn.is_clicked(event.pos):
                     show_instructions()
                 elif quit_btn.is_clicked(event.pos):
@@ -261,7 +272,7 @@ def display_message(message, explanation=""):
     WINDOW.blit(instructions, rect2)
 
     pygame.display.update()
-    wait_for_restart()
+    return wait_for_restart()
 
 
 def wait_for_restart():
@@ -272,7 +283,7 @@ def wait_for_restart():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
-                    main()
+                    return "restart"
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
@@ -341,7 +352,7 @@ def main():
                 letters, letter_bottom_y = generate_letter_positions(WINDOW.get_width())
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.is_clicked(event.pos):
-                    return
+                    return "back"
                 mx, my = pygame.mouse.get_pos()
                 for letter in letters:
                     x, y, ltr, visible = letter
@@ -354,9 +365,14 @@ def main():
                                 hangman_status += 1
 
         if all(letter in guessed for letter in word):
-            display_message("You won!", explanation)
+            result = display_message(f"You won! The word was: {word}", explanation)
+            if result == "restart":
+                return "restart"
         elif hangman_status == 6:
-            display_message(f"You lost! The word was: {word}", explanation)
+            result = display_message(f"You lost! The word was: {word}", explanation)
+            if result == "restart":
+                return "restart"
+    return "back"
 
     pygame.quit()
     sys.exit()
