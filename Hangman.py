@@ -98,7 +98,6 @@ def main_menu():
 
 def show_instructions():
     back_button = BackButton()
-    back_button.draw(WINDOW)
 
     running = True
     font = pygame.font.SysFont("arial", 30)
@@ -113,6 +112,7 @@ def show_instructions():
         for i, line in enumerate(lines):
             text = font.render(line, True, BLACK)
             WINDOW.blit(text, (50, 100 + i * 40))
+        back_button.draw(WINDOW)
         pygame.display.update()
 
         for event in pygame.event.get():
