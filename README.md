@@ -19,6 +19,24 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 - Classic hangman drawing as you make mistakes
 
 ---
+## Requirements
+- Python 3.8 or newer installed
+- pygame library installed
+
+Install pygame
+You can install it using pip:
+ - pip install pygame
+
+Run the Game
+In the terminal or command prompt, navigate to the project folder and run:
+python Hangman.py
+
+Make sure the following files are in the same folder:
+- Hangman.py
+- estonian-words.txt
+- The assets/ folder (with images and fonts)
+
+---
 
 ## Coming/Ideas (Not in  order!)
 
@@ -41,7 +59,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 4. Multistage Hangman Drawing
 - Make the drawing more detailed (e.g., add facial expressions or animations).
 
-# Educational Features
+## Educational Features
 
 5. Explanation Popups
 - keep enhancing it!
@@ -51,7 +69,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 - Add .mp3 files or use a TTS engine to pronounce the Estonian word when revealed.
 - This is great for language learners.
 
-# Visual Improvements
+## Visual Improvements
 
 7. Dark Mode / Theme Toggle
 - Add a key like T to toggle between light/dark mode.
@@ -69,7 +87,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 - Pass & play: One player types the word, the other guesses.
 - Online multiplayer is possible but complex. // Split Screen, Both get same word (Dont see other player word), who quesses faster gets point
 
-# Content and Word System
+## Content and Word System
 
 11. Categories
 - Group words by themes (e.g., "nature", "history", "technology", etc.)
@@ -79,7 +97,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 - Pull words from an online API or Estonian language corpus.
 - Or use separate .txt files per category.
 
-# Progression and Stats
+## Progression and Stats
 
 13. Track Wins/Losses
 - Save stats locally (in a JSON or text file):
@@ -90,7 +108,7 @@ This is a fun and educational Hangman game written in Python using **Pygame**. I
 14. Unlock Achievements
 - E.g., “Guessed a 20-letter word” or “Won 5 games in a row”
 
-# Advanced / Bonus Ideas
+## Advanced / Bonus Ideas
 
 15. Word Puzzle Mode
 - Add a mini crosswords or “jumble” mode where the letters are shuffled.
