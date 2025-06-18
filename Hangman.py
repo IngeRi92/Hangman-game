@@ -59,16 +59,45 @@ def main_menu():
     title_font = pygame.font.SysFont("arial", 80)
     menu_font = pygame.font.SysFont("arial", 40)
 
-    play_btn = Button("Mängi", WIDTH // 2 - 100, 300, 200, 60, menu_font, WHITE, BLACK)
-    info_btn = Button(
-        "Reeglid", WIDTH // 2 - 100, 400, 200, 60, menu_font, WHITE, BLACK
-    )
-    quit_btn = Button("Välju", WIDTH // 2 - 100, 500, 200, 60, menu_font, WHITE, BLACK)
-
     while running:
+        current_width = WINDOW.get_width()
+        current_height = WINDOW.get_height()
+        play_btn = Button(
+            "Mängi",
+            current_width // 2 - 100,
+            current_height // 2 - 100,
+            200,
+            60,
+            menu_font,
+            WHITE,
+            BLACK,
+        )
+        info_btn = Button(
+            "Reeglid",
+            current_width // 2 - 100,
+            current_height // 2 - 20,
+            200,
+            60,
+            menu_font,
+            WHITE,
+            BLACK,
+        )
+        quit_btn = Button(
+            "Välju",
+            current_width // 2 - 100,
+            current_height // 2 + 60,
+            200,
+            60,
+            menu_font,
+            WHITE,
+            BLACK,
+        )
+
         WINDOW.fill(GRAY)
         title_text = title_font.render("Poomismäng", True, BLACK)
-        WINDOW.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, 150))
+        title_x = current_width // 2 - title_text.get_width() // 2
+        title_y = current_height // 2 - 200
+        WINDOW.blit(title_text, (title_x, title_y))
 
         for btn in [play_btn, info_btn, quit_btn]:
             btn.draw(WINDOW)
@@ -105,6 +134,14 @@ def show_instructions():
         "Arva ära peidetud sõna, üks täht korraga.",
         "Iga vale täht toob poomise lähemale.",
         "Arva enne kui kuju valmis saab!",
+        "",
+        "PUNKTID:",
+        "• Sõna pikkus × 10 punkti",
+        "• Ülejäänud elud × 20 punkti",
+        "",
+        "Näide: 15-täheline sõna, 4 elu järel:",
+        "→ (15 × 10) + (4 × 20) = 230 punkti",
+        "",
         "Vajuta [ESC], või vajuta noolele et naasta menüüsse.",
     ]
     while running:
@@ -157,6 +194,10 @@ FONT = pygame.font.SysFont("comicsans", 40)
 RADIUS = 30
 GAP = 20
 ALL_LETTERS = list("ABCDEFGHIJKLMNOPQRSTUVWXYZÖÄÕÜ")
+lives_remaining = 6
+total_score = 0
+current_word_score = 0
+
 # Word setup
 estonian_words = load_words_from_file("estonian_words.txt")
 if not estonian_words:
@@ -290,7 +331,9 @@ def wait_for_restart():
 
 
 def main():
-    global guessed, hangman_status, word, WIDTH, HEIGHT, WINDOW
+    global guessed, hangman_status, word, WIDTH, HEIGHT, WINDOW, lives_remaining, total_score
+
+    lives_remaining = 6
 
     word, explanation = random.choice(estonian_words)
     guessed = set()
@@ -307,6 +350,10 @@ def main():
     while running:
         WINDOW.fill(GRAY)
         window_width = WINDOW.get_width()
+
+        score_text = FONT.render(f"Skoor: {total_score}", True, BLACK)
+        score_x = window_width // 2 - score_text.get_width() // 2
+        WINDOW.blit(score_text, (score_x, 50))
 
         # Draw word
         display_word = " ".join([ltr if ltr in guessed else "_" for ltr in word])
@@ -331,15 +378,19 @@ def main():
 
         # Draw hangman
         row_count = 3
-        starty = (
-            300  # Make sure this matches the value used in generate_letter_positions
-        )
+        starty = 300  # This matches with generate_letter_positions !!!
+
         letters_y_bottom = starty + (row_count - 1) * (GAP + RADIUS * 2)
-        spacing = 350  # Adjust this if needed
+        spacing = 350
         hangman_y_top = letters_y_bottom + spacing
         center_x = WINDOW.get_width() // 2
 
         draw_hangman(hangman_status, center_x, hangman_y_top)
+
+        lives_text = FONT.render(f"Elud: {lives_remaining}/6", True, BLACK)
+        lives_x = center_x - lives_text.get_width() // 2
+        lives_y = hangman_y_top + 80
+        WINDOW.blit(lives_text, (lives_x, lives_y))
 
         pygame.display.update()
 
@@ -363,9 +414,15 @@ def main():
                             letter[3] = False
                             if ltr not in word:
                                 hangman_status += 1
+                                lives_remaining -= 1
 
         if all(letter in guessed for letter in word):
             result = display_message(f"You won! The word was: {word}", explanation)
+            word_length_bonus = len(word) * 10
+            lives_bonus = lives_remaining * 20
+            current_word_score = word_length_bonus + lives_bonus
+            total_score += current_word_score
+
             if result == "restart":
                 return "restart"
         elif hangman_status == 6:
